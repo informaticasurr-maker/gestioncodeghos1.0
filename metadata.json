@@ -1,0 +1,11 @@
+{
+  "name": "Remix Panel de Reparaciones y Servicio Técnico",
+  "description": "Sistema completo de gestión de órdenes de trabajo, presupuestos, clientes, inventario, caja, facturación, cuentas de técnicos y sincronización en la nube con Firebase Firestore y Google Drive.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}

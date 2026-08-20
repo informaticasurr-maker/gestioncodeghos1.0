@@ -1,0 +1,141 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "Technician or administrator user profile in the workshop system",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Firebase Auth UID" },
+        "name": { "type": "string", "description": "Full name of the technician" },
+        "email": { "type": "string", "format": "email", "description": "Email address" },
+        "role": { "type": "string", "enum": ["admin", "tecnico", "recepcion"], "description": "User permission role" },
+        "createdAt": { "type": "string", "description": "ISO timestamp of creation" },
+        "updatedAt": { "type": "string", "description": "ISO timestamp of last update" }
+      },
+      "required": ["id", "name", "email", "role", "createdAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Technical repair work order for phones, laptops, and devices",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique order identifier" },
+        "orderNumber": { "type": "string", "description": "Sequential human-readable order number" },
+        "userId": { "type": "string", "description": "Owner / creator Firebase Auth UID" },
+        "clientId": { "type": "string", "description": "Associated customer ID" },
+        "deviceType": { "type": "string", "description": "Type of device (smartphone, laptop, console, etc.)" },
+        "brand": { "type": "string", "description": "Device brand" },
+        "model": { "type": "string", "description": "Device model" },
+        "status": { "type": "string", "description": "Current status in repair workflow" },
+        "totalAmount": { "type": "number", "description": "Total agreed price" },
+        "advancePayment": { "type": "number", "description": "Paid deposit or advance" },
+        "createdAt": { "type": "string", "description": "Creation ISO date" },
+        "updatedAt": { "type": "string", "description": "Last update ISO date" }
+      },
+      "required": ["id", "orderNumber", "userId", "status", "createdAt"]
+    },
+    "Client": {
+      "title": "Client",
+      "description": "Customer contact details and service history",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique client ID" },
+        "userId": { "type": "string", "description": "Owner / creator Firebase Auth UID" },
+        "name": { "type": "string", "description": "Full name of client" },
+        "phone": { "type": "string", "description": "Phone or WhatsApp number" },
+        "email": { "type": "string", "description": "Email address" },
+        "createdAt": { "type": "string", "description": "Creation ISO date" },
+        "updatedAt": { "type": "string", "description": "Last update ISO date" }
+      },
+      "required": ["id", "userId", "name", "createdAt"]
+    },
+    "InventoryItem": {
+      "title": "InventoryItem",
+      "description": "Spare part, component, or accessory in stock",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique item ID" },
+        "userId": { "type": "string", "description": "Owner / creator Firebase Auth UID" },
+        "name": { "type": "string", "description": "Product or spare part name" },
+        "category": { "type": "string", "description": "Category (pantallas, baterias, etc.)" },
+        "stock": { "type": "number", "description": "Current available quantity" },
+        "minStock": { "type": "number", "description": "Minimum stock alert threshold" },
+        "costPrice": { "type": "number", "description": "Purchase cost price" },
+        "salePrice": { "type": "number", "description": "Retail / repair sale price" },
+        "createdAt": { "type": "string", "description": "Creation ISO date" },
+        "updatedAt": { "type": "string", "description": "Last update ISO date" }
+      },
+      "required": ["id", "userId", "name", "stock", "createdAt"]
+    },
+    "CashMovement": {
+      "title": "CashMovement",
+      "description": "Financial income or expense transaction in register",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique movement ID" },
+        "userId": { "type": "string", "description": "Owner / creator Firebase Auth UID" },
+        "type": { "type": "string", "enum": ["ingreso", "egreso"], "description": "Movement direction" },
+        "amount": { "type": "number", "description": "Monetary value" },
+        "concept": { "type": "string", "description": "Description / concept" },
+        "category": { "type": "string", "description": "Financial category" },
+        "createdAt": { "type": "string", "description": "Creation ISO date" }
+      },
+      "required": ["id", "userId", "type", "amount", "concept", "createdAt"]
+    },
+    "CatalogService": {
+      "title": "CatalogService",
+      "description": "Predefined workshop service offering with standard pricing",
+      "type": "object",
+      "properties": {
+        "id": { "type": "string", "description": "Unique service ID" },
+        "userId": { "type": "string", "description": "Owner / creator Firebase Auth UID" },
+        "name": { "type": "string", "description": "Service name" },
+        "basePrice": { "type": "number", "description": "Standard service price" },
+        "estimatedMinutes": { "type": "number", "description": "Estimated repair duration" }
+      },
+      "required": ["id", "userId", "name", "basePrice"]
+    },
+    "CompanySettingsDoc": {
+      "title": "CompanySettingsDoc",
+      "description": "Workshop branding and general configuration",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner Firebase Auth UID" },
+        "name": { "type": "string", "description": "Workshop business name" },
+        "phone": { "type": "string", "description": "Business contact phone" },
+        "updatedAt": { "type": "string", "description": "Last update ISO date" }
+      },
+      "required": ["userId", "name"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents accessible by owner and admins"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Workshop repair work orders"
+    },
+    "/clients/{clientId}": {
+      "schema": "Client",
+      "description": "Client directory documents"
+    },
+    "/inventory/{itemId}": {
+      "schema": "InventoryItem",
+      "description": "Inventory and spare parts stock records"
+    },
+    "/cashMovements/{movementId}": {
+      "schema": "CashMovement",
+      "description": "Cash register balance and transaction history"
+    },
+    "/services/{serviceId}": {
+      "schema": "CatalogService",
+      "description": "Standard repair service catalog"
+    },
+    "/companySettings/{userId}": {
+      "schema": "CompanySettingsDoc",
+      "description": "Workshop configuration per user"
+    }
+  }
+}

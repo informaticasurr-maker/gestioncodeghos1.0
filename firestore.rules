@@ -1,0 +1,92 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Global Helper Functions
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() >= 1 && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-\\.:]+$');
+    }
+
+    // Connection test document
+    match /test/{docId} {
+      allow read, write: if true;
+    }
+
+    // Users Collection
+    match /users/{userId} {
+      allow get: if isOwner(userId);
+      allow list: if isSignedIn() && resource.data.id == request.auth.uid;
+      allow create: if isOwner(userId) && isValidId(userId);
+      allow update: if isOwner(userId) && isValidId(userId);
+      allow delete: if isOwner(userId);
+    }
+
+    // Orders Collection
+    match /orders/{orderId} {
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(orderId) && (request.resource.data.userId == request.auth.uid || request.resource.data.userId == null);
+      allow update: if isSignedIn() && isValidId(orderId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow delete: if isSignedIn() && isValidId(orderId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+    }
+
+    // Clients Collection
+    match /clients/{clientId} {
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(clientId) && (request.resource.data.userId == request.auth.uid || request.resource.data.userId == null);
+      allow update: if isSignedIn() && isValidId(clientId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow delete: if isSignedIn() && isValidId(clientId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+    }
+
+    // Inventory Collection
+    match /inventory/{itemId} {
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(itemId) && (request.resource.data.userId == request.auth.uid || request.resource.data.userId == null);
+      allow update: if isSignedIn() && isValidId(itemId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow delete: if isSignedIn() && isValidId(itemId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+    }
+
+    // Cash Movements Collection
+    match /cashMovements/{movementId} {
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(movementId) && (request.resource.data.userId == request.auth.uid || request.resource.data.userId == null);
+      allow update: if isSignedIn() && isValidId(movementId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow delete: if isSignedIn() && isValidId(movementId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+    }
+
+    // Services Catalog Collection
+    match /services/{serviceId} {
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow list: if isSignedIn();
+      allow create: if isSignedIn() && isValidId(serviceId) && (request.resource.data.userId == request.auth.uid || request.resource.data.userId == null);
+      allow update: if isSignedIn() && isValidId(serviceId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow delete: if isSignedIn() && isValidId(serviceId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+    }
+
+    // Company Settings Collection
+    match /companySettings/{docId} {
+      allow get: if isSignedIn() && (resource.data.userId == request.auth.uid || docId == request.auth.uid || docId == 'global');
+      allow list: if isSignedIn();
+      allow create, update: if isSignedIn() && isValidId(docId);
+      allow delete: if isSignedIn() && (resource.data.userId == request.auth.uid || docId == request.auth.uid);
+    }
+
+    // Backups Collection
+    match /backups/{backupId} {
+      allow get, list: if isSignedIn() && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+      allow create: if isSignedIn() && isValidId(backupId) && (request.resource.data.userId == request.auth.uid || request.resource.data.userId == null);
+      allow update, delete: if isSignedIn() && isValidId(backupId) && (resource.data.userId == request.auth.uid || resource.data.userId == null);
+    }
+  }
+}
