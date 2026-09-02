@@ -1,5 +1,5 @@
 <div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://ai.google.dev/static/site-assets/images/share-ais-513315318.png" />
+<img width="1200" height="475" alt="https://storage.e.jimdo.com/cdn-cgi/image/quality=85,fit=scale-down,format=auto,width=720,height=1280/image/362059056/4a3e9f49-fdbc-4b81-81b1-71fe4d0c27da.jpg" />
 </div>
 
 # Ejecutar y desplegar tu aplicación de Servicio Técnico con IA
