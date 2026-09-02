@@ -342,9 +342,10 @@ export const DatabaseManager: React.FC = () => {
         {(activeSubTab === 'ordenes' || activeSubTab === 'clientes') && (
           <div className="p-3.5 border-b border-slate-100 bg-slate-50/50 flex flex-wrap items-center justify-between gap-3">
             <div className="relative flex-1 max-w-md">
-              <Search className="w-4 h-4 text-slate-400 absolute left-3 top-2.5" />
+              <Search className="w-4 h-4 text-amber-400 absolute left-3 top-2.5 z-10 pointer-events-none" />
               <input
                 type="text"
+                data-search-input="true"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 placeholder={
@@ -352,7 +353,7 @@ export const DatabaseManager: React.FC = () => {
                     ? 'Buscar en BD por N° de orden, cliente, serial, marca, modelo...'
                     : 'Buscar en BD por nombre, teléfono, DNI, email...'
                 }
-                className="w-full text-xs pl-9 pr-3 py-2 border border-slate-300 rounded-lg bg-white focus:ring-2 focus:ring-indigo-500"
+                className="search-input-fluor w-full text-xs pl-9 pr-3 py-2 border border-slate-300 dark:border-slate-700 rounded-lg bg-white dark:bg-slate-800"
               />
             </div>
 

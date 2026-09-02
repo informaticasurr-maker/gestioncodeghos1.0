@@ -299,10 +299,11 @@ export const CashRegisterManager: React.FC = () => {
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />
           <input
             type="text"
+            data-search-input="true"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             placeholder="Buscar por descripción, orden OT-2026-..., cliente o proveedor..."
-            className="w-full text-xs sm:text-sm pl-9 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 text-slate-800 dark:text-slate-100 focus:ring-2 focus:ring-emerald-500 outline-none"
+            className="search-input-fluor w-full text-xs sm:text-sm pl-9 pr-4 py-2 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800/60 outline-none"
           />
           {searchQuery && (
             <button

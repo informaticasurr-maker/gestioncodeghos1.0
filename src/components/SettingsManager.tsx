@@ -741,9 +741,9 @@ export const SettingsManager: React.FC = () => {
                 </div>
 
                 {/* 2. MODO OSCURO (DARK MODE) */}
-                <div className="space-y-3 pt-3 border-t border-slate-200 dark:border-slate-800">
+                <div className="space-y-3 pt-3 border-t border-slate-200 dark:border-[#1a2640]">
                   <label className="block text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider flex items-center gap-1.5">
-                    <Moon className="w-4 h-4 text-blue-600 dark:text-blue-400" />
+                    <Moon className="w-4 h-4 text-blue-600 dark:text-[#00f2fe]" />
                     <span>2. Modo Oscuro / Tema de Apariencia:</span>
                   </label>
 
@@ -751,14 +751,22 @@ export const SettingsManager: React.FC = () => {
                     {/* Light Option */}
                     <button
                       type="button"
-                      onClick={() => setTheme('light')}
+                      onClick={() => {
+                        setTheme('light');
+                        const root = document.documentElement;
+                        root.classList.remove('dark');
+                        root.setAttribute('data-theme', 'light');
+                        root.style.colorScheme = 'light';
+                        localStorage.setItem('techfix_theme', 'light');
+                        updateCompanySettings({ theme: 'light' });
+                      }}
                       className={`p-3.5 rounded-xl border-2 flex flex-col items-center justify-center gap-2 text-center transition ${
                         theme === 'light'
-                          ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 font-bold shadow-xs'
-                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-400 hover:border-slate-300'
+                          ? 'border-blue-600 dark:border-[#00f2fe] bg-blue-50/70 dark:bg-[#111f38] text-blue-900 dark:text-[#00f2fe] font-bold shadow-xs'
+                          : 'border-slate-200 dark:border-[#1a2640] bg-slate-50 dark:bg-[#080e1a] text-slate-700 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600'
                       }`}
                     >
-                      <div className="p-2 bg-amber-100 rounded-full text-amber-700">
+                      <div className="p-2 bg-amber-100 dark:bg-amber-950/60 rounded-full text-amber-600 dark:text-amber-400">
                         <Sun className="w-5 h-5" />
                       </div>
                       <div className="text-xs font-bold">Modo Claro</div>
@@ -770,38 +778,61 @@ export const SettingsManager: React.FC = () => {
                     {/* Dark Option */}
                     <button
                       type="button"
-                      onClick={() => setTheme('dark')}
+                      onClick={() => {
+                        setTheme('dark');
+                        const root = document.documentElement;
+                        root.classList.add('dark');
+                        root.setAttribute('data-theme', 'dark');
+                        root.style.colorScheme = 'dark';
+                        localStorage.setItem('techfix_theme', 'dark');
+                        updateCompanySettings({ theme: 'dark' });
+                      }}
                       className={`p-3.5 rounded-xl border-2 flex flex-col items-center justify-center gap-2 text-center transition ${
                         theme === 'dark'
-                          ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 font-bold shadow-xs'
-                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-400 hover:border-slate-300'
+                          ? 'border-blue-600 dark:border-[#00f2fe] bg-blue-50/70 dark:bg-[#111f38] text-blue-900 dark:text-[#00f2fe] font-bold shadow-xs dark:shadow-[0_0_15px_rgba(0,242,254,0.2)]'
+                          : 'border-slate-200 dark:border-[#1a2640] bg-slate-50 dark:bg-[#080e1a] text-slate-700 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600'
                       }`}
                     >
-                      <div className="p-2 bg-slate-900 text-blue-400 rounded-full border border-slate-700">
+                      <div className="p-2 bg-[#090f1d] text-[#00f2fe] rounded-full border border-[#1a2640]">
                         <Moon className="w-5 h-5" />
                       </div>
                       <div className="text-xs font-bold">Modo Oscuro</div>
                       <div className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
-                        Reduce fatiga visual en taller
+                        Azul noche & acentos cian/esmeralda
                       </div>
                     </button>
 
                     {/* System Auto Option */}
                     <button
                       type="button"
-                      onClick={() => setTheme('system')}
+                      onClick={() => {
+                        setTheme('system');
+                        const root = document.documentElement;
+                        const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+                        if (systemDark) {
+                          root.classList.add('dark');
+                          root.setAttribute('data-theme', 'dark');
+                          root.style.colorScheme = 'dark';
+                        } else {
+                          root.classList.remove('dark');
+                          root.setAttribute('data-theme', 'light');
+                          root.style.colorScheme = 'light';
+                        }
+                        localStorage.setItem('techfix_theme', 'system');
+                        updateCompanySettings({ theme: 'system' });
+                      }}
                       className={`p-3.5 rounded-xl border-2 flex flex-col items-center justify-center gap-2 text-center transition ${
                         theme === 'system'
-                          ? 'border-blue-600 bg-blue-50 dark:bg-blue-950/40 text-blue-900 dark:text-blue-200 font-bold shadow-xs'
-                          : 'border-slate-200 dark:border-slate-800 bg-slate-50 dark:bg-slate-800/50 text-slate-700 dark:text-slate-400 hover:border-slate-300'
+                          ? 'border-blue-600 dark:border-[#00f2fe] bg-blue-50/70 dark:bg-[#111f38] text-blue-900 dark:text-[#00f2fe] font-bold shadow-xs'
+                          : 'border-slate-200 dark:border-[#1a2640] bg-slate-50 dark:bg-[#080e1a] text-slate-700 dark:text-slate-400 hover:border-slate-300 dark:hover:border-slate-600'
                       }`}
                     >
-                      <div className="p-2 bg-slate-200 dark:bg-slate-700 text-slate-700 dark:text-slate-200 rounded-full">
+                      <div className="p-2 bg-slate-200 dark:bg-[#131c38] text-slate-700 dark:text-indigo-300 rounded-full">
                         <Laptop className="w-5 h-5" />
                       </div>
                       <div className="text-xs font-bold">Automático (Sistema)</div>
                       <div className="text-[10px] text-slate-500 dark:text-slate-400 leading-tight">
-                        Sigue el tema de Windows/Mac/Android
+                        Sigue el tema del dispositivo
                       </div>
                     </button>
                   </div>

@@ -1,36 +1,151 @@
 @import "tailwindcss";
 
-@layer base {
-  :root {
-    --bg-app: #0b1329;
-    --primary-navy: #0f172a;
-    --accent-blue: #2563eb;
-    --accent-blue-hover: #1d4ed8;
-    --border-subtle: #e2e8f0;
-  }
+/* ==========================================================================
+   SISTEMA DE DISEÑO UNIFICADO - PALETA EXTRAÍDA (MODO OSCURO / MODO CLARO)
+   Inspirado en la Landing Page Oficial (Deep Midnight, Cyan & Emerald Glow)
+   ========================================================================== */
 
+:root {
+  /* --- PALETA MODO CLARO (INVERSIÓN LÓGICA ELEGANTE) --- */
+  --bg-canvas: #f8fafc;
+  --bg-surface: #ffffff;
+  --bg-card: #ffffff;
+  --bg-card-hover: #f1f5f9;
+  --bg-card-elevated: #ffffff;
+  --bg-input: #ffffff;
+  --bg-input-focus: #ffffff;
+  --bg-header: #ffffff;
+  --bg-sidebar: #ffffff;
+  --bg-modal: #ffffff;
+  --bg-table-header: #f1f5f9;
+  --bg-table-stripe: #f8fafc;
+
+  /* Textos */
+  --text-main: #070b14;
+  --text-primary: #0b1329;
+  --text-secondary: #334155;
+  --text-muted: #64748b;
+  --text-inverted: #f8fafc;
+
+  /* Color de tipeado en inputs y barras de búsqueda: Amarillo Fuerte y Vibrante (#FACC15) */
+  --input-text-color: #FACC15;
+  --input-caret-color: #FACC15;
+
+  /* Bordes & Separadores */
+  --border-main: #e2e8f0;
+  --border-subtle: #f1f5f9;
+  --border-strong: #cbd5e1;
+  --border-focus: #0284c7;
+
+  /* Acentos vibrantes */
+  --accent-cyan: #0284c7;
+  --accent-cyan-light: #38bdf8;
+  --accent-cyan-subtle: rgba(2, 132, 199, 0.1);
+  --accent-cyan-border: rgba(2, 132, 199, 0.3);
+  --accent-emerald: #059669;
+  --accent-emerald-subtle: rgba(5, 150, 105, 0.1);
+  --accent-purple: #7c3aed;
+  --accent-purple-subtle: rgba(124, 58, 237, 0.1);
+  --accent-indigo: #4f46e5;
+  --accent-amber: #d97706;
+
+  /* Sombras & Resplandor */
+  --shadow-sm: 0 1px 2px 0 rgba(7, 11, 20, 0.05);
+  --shadow-card: 0 4px 20px -2px rgba(7, 11, 20, 0.05), 0 0 1px 1px rgba(7, 11, 20, 0.04);
+  --shadow-card-hover: 0 10px 25px -3px rgba(7, 11, 20, 0.08), 0 0 1px 1px rgba(7, 11, 20, 0.06);
+  --shadow-modal: 0 25px 50px -12px rgba(7, 11, 20, 0.25);
+  --glow-cyan: 0 0 20px rgba(2, 132, 199, 0.15);
+  --glow-emerald: 0 0 20px rgba(5, 150, 105, 0.15);
+  --glow-purple: 0 0 20px rgba(124, 58, 237, 0.15);
+
+  /* Scrollbar */
+  --scrollbar-track: #f1f5f9;
+  --scrollbar-thumb: #cbd5e1;
+  --scrollbar-thumb-hover: #94a3b8;
+}
+
+html.dark,
+[data-theme='dark'] {
+  /* --- PALETA MODO OSCURO (EXTRAÍDA EXACTA DE LA IMAGEN DE LA LANDING) --- */
+  --bg-canvas: #070b14;
+  --bg-surface: #0c1322;
+  --bg-card: #0c1322;
+  --bg-card-hover: #111b30;
+  --bg-card-elevated: #10192e;
+  --bg-input: #080e1a;
+  --bg-input-focus: #0c1527;
+  --bg-header: #090f1d;
+  --bg-sidebar: #090f1d;
+  --bg-modal: #0c1322;
+  --bg-table-header: #0e172a;
+  --bg-table-stripe: #090f1d;
+
+  /* Textos Principales */
+  --text-main: #f8fafc;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --text-inverted: #070b14;
+
+  /* Color de tipeado en inputs (Amarillo Fuerte y Vibrante #FACC15) */
+  --input-text-color: #FACC15;
+  --input-caret-color: #FACC15;
+
+  /* Bordes */
+  --border-main: #1a2640;
+  --border-subtle: #131c31;
+  --border-strong: #24355a;
+  --border-focus: #00f2fe;
+
+  /* Acentos Vibrantes */
+  --accent-cyan: #00f2fe;
+  --accent-cyan-light: #38bdf8;
+  --accent-cyan-subtle: rgba(0, 242, 254, 0.15);
+  --accent-cyan-border: rgba(0, 242, 254, 0.35);
+  --accent-emerald: #05d59e;
+  --accent-emerald-subtle: rgba(5, 213, 158, 0.15);
+  --accent-purple: #8b5cf6;
+  --accent-purple-subtle: rgba(139, 92, 246, 0.15);
+  --accent-indigo: #6366f1;
+  --accent-amber: #f59e0b;
+
+  /* Sombras & Efectos de Resplandor Neón */
+  --shadow-sm: 0 1px 3px 0 rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 10px 30px -10px rgba(0, 0, 0, 0.6), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+  --shadow-card-hover: 0 15px 35px -5px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 242, 254, 0.12), 0 0 1px 1px rgba(0, 242, 254, 0.2);
+  --shadow-modal: 0 25px 50px -12px rgba(0, 0, 0, 0.8), 0 0 40px rgba(0, 242, 254, 0.08);
+  --glow-cyan: 0 0 30px rgba(0, 242, 254, 0.25);
+  --glow-emerald: 0 0 30px rgba(5, 213, 158, 0.25);
+  --glow-purple: 0 0 30px rgba(139, 92, 246, 0.25);
+
+  /* Scrollbar */
+  --scrollbar-track: #070b14;
+  --scrollbar-thumb: #1e293b;
+  --scrollbar-thumb-hover: #334155;
+}
+
+@layer base {
   html {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     color-scheme: light;
-    background-color: #f1f5f9;
+    background-color: var(--bg-canvas);
+    color: var(--text-main);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   html.dark {
     color-scheme: dark;
-    background-color: #0b1120;
-    color: #f1f5f9;
+    background-color: var(--bg-canvas);
+    color: var(--text-main);
   }
 
   body {
-    color: #1e293b;
-    transition: background-color 0.2s ease, color 0.2s ease;
-  }
-
-  html.dark body {
-    color: #e2e8f0;
-    background-color: #0b1120;
+    background-color: var(--bg-canvas);
+    color: var(--text-main);
+    min-height: 100vh;
+    transition: background-color 0.25s ease, color 0.25s ease;
   }
 
   /* Custom subtle scrollbar with modern technical tone */
@@ -39,43 +154,434 @@
     height: 6px;
   }
   ::-webkit-scrollbar-track {
-    background: #f1f5f9;
-  }
-  html.dark ::-webkit-scrollbar-track {
-    background: #0f172a;
+    background: var(--scrollbar-track);
   }
   ::-webkit-scrollbar-thumb {
-    background: #94a3b8;
+    background: var(--scrollbar-thumb);
     border-radius: 9999px;
   }
-  html.dark ::-webkit-scrollbar-thumb {
-    background: #334155;
-  }
   ::-webkit-scrollbar-thumb:hover {
-    background: #64748b;
+    background: var(--scrollbar-thumb-hover);
   }
-  html.dark ::-webkit-scrollbar-thumb:hover {
-    background: #475569;
+
+  /* ==========================================================================
+     REGLAS GLOBALES PARA INPUTS, TEXTAREAS Y BARRAS DE BÚSQUEDA:
+     LETRAS AMARILLO FUERTE Y VIBRANTE (#FACC15 / Tailwind yellow-400)
+     Control Dinámico de Contraste y Accesibilidad (Modo Claro y Oscuro)
+     ========================================================================== */
+
+  /* 1. TODOS LOS INPUTS Y TEXTAREAS (Formularios, Modales y Paneles) */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+  textarea {
+    background-color: #0b1322 !important;
+    border: 1px solid #1e293b !important;
+    color: #FACC15 !important; /* Amarillo fuerte y vibrante */
+    caret-color: #FACC15 !important;
+    font-weight: 600 !important;
+    /* Sombra inteligente de contorno oscuro + resplandor dorado para máxima legibilidad y cero deslumbramiento */
+    text-shadow: 0 0 1px #000000, 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(250, 204, 21, 0.45) !important;
+    letter-spacing: 0.015em;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease, color 0.2s ease;
+  }
+
+  /* Placeholder de contraste adaptativo para inputs */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"])::placeholder,
+  textarea::placeholder {
+    color: #94a3b8 !important;
+    opacity: 0.75 !important;
+    text-shadow: none !important;
+    font-weight: normal !important;
+  }
+
+  /* Estado cuando hay contenido escrito en inputs y textareas */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not(:placeholder-shown),
+  textarea:not(:placeholder-shown) {
+    color: #FACC15 !important;
+    text-shadow: 0 0 1px #000000, 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(250, 204, 21, 0.5) !important;
+  }
+
+  /* Focus ring vibrante en amarillo */
+  input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]):focus,
+  textarea:focus {
+    border-color: #FACC15 !important;
+    box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.3), 0 0 14px rgba(250, 204, 21, 0.3) !important;
+    background-color: #070c18 !important;
+    outline: none !important;
+  }
+
+  /* Modo Oscuro Reforzado para Inputs y Textareas */
+  html.dark input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+  html.dark textarea {
+    background-color: #080e1a !important;
+    border-color: #1a2640 !important;
+    color: #FACC15 !important;
+    caret-color: #FACC15 !important;
+    text-shadow: 0 0 1px #000000, 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 10px rgba(250, 204, 21, 0.5) !important;
+  }
+
+  /* 2. REGLA PARA TODAS LAS BARRAS DE BÚSQUEDA (SEARCH BARS) */
+  input[type="search"],
+  input[data-search-input="true"],
+  input.search-input-fluor,
+  input[placeholder*="Buscar" i],
+  input[placeholder*="buscar" i],
+  input[placeholder*="Filtrar" i] {
+    background-color: #080e1a !important;
+    border: 1px solid #1e293b !important;
+    color: #FACC15 !important; /* Amarillo fuerte y vibrante */
+    caret-color: #FACC15 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 1px #000000, 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 8px rgba(250, 204, 21, 0.8), 0 0 18px rgba(234, 179, 8, 0.5) !important;
+    letter-spacing: 0.02em;
+    transition: all 0.15s ease-in-out;
+  }
+
+  /* Placeholder de las barras de búsqueda: ámbar dorado suave y legible */
+  input[type="search"]::placeholder,
+  input[data-search-input="true"]::placeholder,
+  input.search-input-fluor::placeholder,
+  input[placeholder*="Buscar" i]::placeholder,
+  input[placeholder*="buscar" i]::placeholder,
+  input[placeholder*="Filtrar" i]::placeholder {
+    color: #fde047 !important; /* Amarillo claro dorado legible */
+    opacity: 0.82 !important;
+    text-shadow: 0 0 2px rgba(250, 204, 21, 0.3) !important;
+    font-weight: 500 !important;
+  }
+
+  html.dark input[type="search"],
+  html.dark input[data-search-input="true"],
+  html.dark input.search-input-fluor,
+  html.dark input[placeholder*="Buscar" i],
+  html.dark input[placeholder*="buscar" i],
+  html.dark input[placeholder*="Filtrar" i] {
+    background-color: #070c16 !important;
+    border: 1px solid #1b273d !important;
+    color: #FACC15 !important;
+    caret-color: #FACC15 !important;
+    font-weight: 700 !important;
+    text-shadow: 0 0 1px #000000, 0 1px 2px rgba(0, 0, 0, 0.95), 0 0 10px rgba(250, 204, 21, 0.9), 0 0 22px rgba(234, 179, 8, 0.55) !important;
+  }
+
+  html.dark input[type="search"]::placeholder,
+  html.dark input[data-search-input="true"]::placeholder,
+  html.dark input.search-input-fluor::placeholder,
+  html.dark input[placeholder*="Buscar" i]::placeholder,
+  html.dark input[placeholder*="buscar" i]::placeholder,
+  html.dark input[placeholder*="Filtrar" i]::placeholder {
+    color: #fde047 !important;
+    opacity: 0.82 !important;
+    text-shadow: 0 0 3px rgba(250, 204, 21, 0.35) !important;
+  }
+
+  /* Resplandor al enfocar el buscador */
+  input[type="search"]:focus,
+  input[data-search-input="true"]:focus,
+  input.search-input-fluor:focus,
+  input[placeholder*="Buscar" i]:focus,
+  input[placeholder*="buscar" i]:focus,
+  input[placeholder*="Filtrar" i]:focus {
+    background-color: #050912 !important;
+    border-color: #FACC15 !important;
+    box-shadow: 0 0 0 2px rgba(250, 204, 21, 0.35), 0 0 16px rgba(250, 204, 21, 0.35) !important;
+    outline: none !important;
+  }
+
+  /* 3. CONTROL DINÁMICO DE CONTRASTE Y ACCESIBILIDAD (Modo Claro & Paneles Blancos/Grises)
+     Garantiza que cualquier input situado dentro de contenedores claros obtenga automáticamente
+     fondo oscuro técnico y contorno para evitar deslumbramiento o pérdida de contraste */
+  .bg-white input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+  .bg-slate-50 input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+  .bg-slate-100 input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+  .bg-gray-50 input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+  .bg-gray-100 input:not([type="checkbox"]):not([type="radio"]):not([type="color"]):not([type="range"]):not([type="submit"]):not([type="button"]):not([type="reset"]),
+  .bg-white textarea,
+  .bg-slate-50 textarea,
+  .bg-slate-100 textarea,
+  .bg-gray-50 textarea,
+  .bg-gray-100 textarea {
+    background-color: #0b1322 !important;
+    border-color: #1e293b !important;
+    color: #FACC15 !important;
+    caret-color: #FACC15 !important;
+  }
+
+  /* ==========================================================================
+     PANELES DESPLEGABLES DE CATEGORÍAS Y STOCKS: LETRAS VIOLETAS BRILLANTE
+     ========================================================================== */
+  .text-violet-fluor,
+  .panel-option-violet {
+    color: #d946ef !important; /* Violeta / fucsia brillante */
+    text-shadow: 0 0 4px #d946ef, 0 0 10px rgba(217, 70, 239, 0.8), 0 0 18px rgba(192, 132, 252, 0.45) !important;
+    font-weight: 600 !important;
+  }
+
+  html.dark .text-violet-fluor,
+  html.dark .panel-option-violet {
+    color: #f0abfc !important; /* Violeta claro resplandeciente en dark mode */
+    text-shadow: 0 0 5px #d946ef, 0 0 12px rgba(217, 70, 239, 0.95), 0 0 22px rgba(232, 121, 249, 0.6) !important;
+  }
+
+  .select-violet-fluor,
+  .select-violet-fluor option {
+    color: #d946ef !important;
+    background-color: #0f172a;
+    font-weight: 600;
   }
 }
 
-/* Professional Technical Utility Classes */
+/* ==========================================================================
+   REGLAS DE ADAPTABILIDAD AUTOMÁTICA Y UNIFICACIÓN DE MODO OSCURO (DEEP MIDNIGHT)
+   ========================================================================== */
+
+html.dark .bg-white:not([class*="bg-white/"]):not(.keep-white):not([class*="hover:bg-white"]) {
+  background-color: var(--bg-card);
+  color: var(--text-main);
+  border-color: var(--border-main);
+}
+
+html.dark .bg-slate-50:not([class*="bg-slate-50/"]):not(.keep-original),
+html.dark .bg-slate-100:not([class*="bg-slate-100/"]):not(.keep-original) {
+  background-color: var(--bg-input);
+  color: var(--text-main);
+  border-color: var(--border-subtle);
+}
+
+html.dark .border-slate-200,
+html.dark .border-slate-300 {
+  border-color: var(--border-main);
+}
+
+html.dark .text-slate-900,
+html.dark .text-slate-800 {
+  color: var(--text-main);
+}
+
+html.dark .text-slate-700 {
+  color: #e2e8f0;
+}
+
+html.dark .text-slate-600,
+html.dark .text-slate-500 {
+  color: var(--text-secondary);
+}
+
+html.dark .hover\:bg-slate-50:hover,
+html.dark .hover\:bg-slate-100:hover {
+  background-color: var(--bg-card-hover);
+}
+
+html.dark select option {
+  background-color: #0c1322 !important;
+  color: #00f2fe !important;
+}
+
+html.dark .divide-slate-200 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--border-main);
+}
+
+html.dark .divide-slate-100 > :not([hidden]) ~ :not([hidden]) {
+  border-color: var(--border-subtle);
+}
+
+/* ==========================================================================
+   CLASES DE UTILIDAD DEL SISTEMA DE TEMAS (UNIFICADAS)
+   ========================================================================== */
+
+/* Contenedores y Tarjetas */
+.theme-canvas {
+  background-color: var(--bg-canvas);
+  color: var(--text-main);
+}
+
+.theme-card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-main);
+  box-shadow: var(--shadow-card);
+  color: var(--text-main);
+  transition: all 0.2s ease-in-out;
+}
+
+.theme-card-hover:hover {
+  background-color: var(--bg-card-hover);
+  box-shadow: var(--shadow-card-hover);
+}
+
+.theme-card-subtle {
+  background-color: var(--bg-card-hover);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-main);
+}
+
+.theme-header {
+  background-color: var(--bg-header);
+  border-color: var(--border-main);
+}
+
+.theme-sidebar {
+  background-color: var(--bg-sidebar);
+  border-color: var(--border-main);
+}
+
+.theme-modal {
+  background-color: var(--bg-modal);
+  border: 1px solid var(--border-main);
+  box-shadow: var(--shadow-modal);
+  color: var(--text-main);
+}
+
+/* Inputs y Controles */
+.theme-input {
+  background-color: var(--bg-input);
+  border: 1px solid var(--border-main);
+  color: var(--input-text-color) !important;
+  caret-color: var(--input-caret-color) !important;
+  font-weight: 600;
+  border-radius: 0.5rem;
+}
+.theme-input:focus {
+  background-color: var(--bg-input-focus);
+  border-color: var(--accent-cyan);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-cyan-subtle);
+}
+
+/* Tipografía */
+.theme-text-title {
+  color: var(--text-main);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+}
+
+.theme-text-body {
+  color: var(--text-secondary);
+}
+
+.theme-text-muted {
+  color: var(--text-muted);
+}
+
+.theme-text-cyan {
+  color: var(--accent-cyan);
+}
+
+.theme-text-emerald {
+  color: var(--accent-emerald);
+}
+
+.theme-text-purple {
+  color: var(--accent-purple);
+}
+
+/* Degradados Clave de la Landing Page */
+.gradient-title-cyan {
+  background: linear-gradient(135deg, #ffffff 0%, #38bdf8 50%, #00f2fe 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html:not(.dark) .gradient-title-cyan {
+  background: linear-gradient(135deg, #070b14 0%, #0284c7 60%, #06b6d4 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-title-purple {
+  background: linear-gradient(135deg, #38bdf8 0%, #818cf8 50%, #c084fc 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+html:not(.dark) .gradient-title-purple {
+  background: linear-gradient(135deg, #0f172a 0%, #4f46e5 50%, #7c3aed 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Botones con Acentos de la Landing */
+.btn-cyan {
+  background-color: var(--accent-cyan);
+  color: #070b14;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px var(--accent-cyan-subtle);
+}
+.btn-cyan:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--glow-cyan);
+  transform: translateY(-1px);
+}
+
+.btn-emerald {
+  background-color: var(--accent-emerald);
+  color: #070b14;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px var(--accent-emerald-subtle);
+}
+.btn-emerald:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--glow-emerald);
+  transform: translateY(-1px);
+}
+
+.btn-purple {
+  background: linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%);
+  color: #ffffff;
+  font-weight: 700;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 10px var(--accent-purple-subtle);
+}
+.btn-purple:hover {
+  filter: brightness(1.1);
+  box-shadow: var(--glow-purple);
+  transform: translateY(-1px);
+}
+
+/* Badges y Pills */
+.badge-cyan {
+  background-color: var(--accent-cyan-subtle);
+  border: 1px solid var(--accent-cyan-border);
+  color: var(--accent-cyan);
+}
+
+.badge-emerald {
+  background-color: var(--accent-emerald-subtle);
+  border: 1px solid rgba(5, 213, 158, 0.3);
+  color: var(--accent-emerald);
+}
+
+.badge-purple {
+  background-color: var(--accent-purple-subtle);
+  border: 1px solid rgba(139, 92, 246, 0.3);
+  color: var(--accent-purple);
+}
+
+/* Resplandores y Efectos Neón */
+.glow-box-cyan {
+  box-shadow: var(--glow-cyan);
+}
+
+.glow-box-purple {
+  box-shadow: var(--glow-purple);
+}
+
+.glow-box-emerald {
+  box-shadow: var(--glow-emerald);
+}
+
+/* Clases de compatibilidad */
 .tech-card {
-  background-color: #ffffff;
-  border: 1px solid #e2e8f0;
-  box-shadow: 0 1px 3px 0 rgba(15, 23, 42, 0.05);
-}
-
-html.dark .tech-card {
-  background-color: #1e293b;
-  border-color: #334155;
-  color: #f8fafc;
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-main);
+  box-shadow: var(--shadow-card);
+  color: var(--text-main);
 }
 
 .tech-card-dark {
-  background-color: #0f172a;
-  border: 1px solid #1e293b;
-  color: #f8fafc;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-main);
+  color: var(--text-main);
 }
 
 .no-scrollbar::-webkit-scrollbar {
@@ -86,8 +592,27 @@ html.dark .tech-card {
   scrollbar-width: none;
 }
 
+/* Keyframe animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.2s ease-out forwards;
+}
+
+@keyframes pulseGlow {
+  0%, 100% { opacity: 0.4; }
+  50% { opacity: 0.8; }
+}
+
+.animate-pulse-glow {
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+/* Reglas de impresión */
 @media print {
-  /* Clean print formatting */
   body, html {
     background: #ffffff !important;
     color: #000000 !important;
@@ -97,7 +622,6 @@ html.dark .tech-card {
     print-color-adjust: exact !important;
   }
 
-  /* Hide navigation, headers, footers, and modal backdrops */
   header,
   footer,
   aside,
@@ -109,7 +633,6 @@ html.dark .tech-card {
     display: none !important;
   }
 
-  /* Expand modal to full standard print sheet */
   .fixed.inset-0 {
     position: static !important;
     background: #ffffff !important;
@@ -138,4 +661,3 @@ html.dark .tech-card {
     page-break-inside: avoid !important;
   }
 }
-

@@ -30,7 +30,7 @@ const MainLayout: React.FC = () => {
   const { exitToastVisible } = useMobileBackHandler();
 
   return (
-    <div className="min-h-screen bg-slate-100 dark:bg-slate-950 flex flex-col font-sans text-slate-800 dark:text-slate-100 antialiased selection:bg-blue-600 selection:text-white transition-colors duration-200">
+    <div className="min-h-screen bg-[#f8fafc] dark:bg-[#070b14] flex flex-col font-sans text-slate-800 dark:text-slate-100 antialiased selection:bg-[#00f2fe] selection:text-[#070b14] transition-colors duration-200">
       {/* Top Application Header */}
       <Header />
 

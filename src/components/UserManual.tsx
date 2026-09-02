@@ -89,10 +89,11 @@ export const UserManual: React.FC = () => {
               <Search className="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-2.5" />
               <input
                 type="text"
+                data-search-input="true"
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 placeholder="Buscar en el manual..."
-                className="w-full text-xs pl-8 pr-2.5 py-1.5 border border-slate-200 rounded-lg bg-slate-50 focus:bg-white"
+                className="search-input-fluor w-full text-xs pl-8 pr-2.5 py-1.5 border border-slate-200 dark:border-slate-700 rounded-lg bg-slate-50 dark:bg-slate-800 focus:bg-white dark:focus:bg-slate-900"
               />
             </div>
 

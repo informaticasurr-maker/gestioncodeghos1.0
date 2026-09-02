@@ -92,6 +92,10 @@ interface AppContextType {
   updateInventoryItem: (item: InventoryItem) => void;
   deleteInventoryItem: (itemId: string) => void;
   adjustInventoryStock: (itemId: string, quantityChange: number, reason?: string) => void;
+  syncInventoryBatch: (
+    items: Array<Omit<InventoryItem, 'id' | 'createdAt' | 'updatedAt'> | InventoryItem>,
+    mode?: 'smart_merge' | 'add_all'
+  ) => { added: number; updated: number };
 
   // Cash Register Actions
   addCashMovement: (movement: Omit<CashMovement, 'id' | 'createdAt'>) => CashMovement;
@@ -165,11 +169,13 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
   const [companySettings, setCompanySettings] = useState<CompanySettings>(() => {
     try {
       const saved = localStorage.getItem('techfix_company_settings');
+      const savedTheme = localStorage.getItem('techfix_theme') as 'light' | 'dark' | 'system' | null;
       if (saved) {
         const parsed = JSON.parse(saved);
         return {
           ...initialCompanySettings,
           ...parsed,
+          theme: savedTheme || parsed.theme || initialCompanySettings.theme,
           userAccount: {
             ...initialCompanySettings.userAccount,
             ...(parsed.userAccount || {}),
@@ -203,7 +209,10 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
           },
         };
       }
-      return initialCompanySettings;
+      return {
+        ...initialCompanySettings,
+        theme: savedTheme || initialCompanySettings.theme,
+      };
     } catch {
       return initialCompanySettings;
     }
@@ -325,26 +334,32 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     return () => clearTimeout(timer);
   }, [isInitialized, companySettings, clients, servicesCatalog, orders, inventory, cashMovements]);
 
-  // Synchronize Dark / Light mode with DOM
+  // Synchronize Dark / Light mode with DOM & localStorage
   useEffect(() => {
     const root = document.documentElement;
-    const theme = companySettings.theme || 'light';
+    const theme = companySettings.theme || 'dark';
 
-    if (theme === 'dark') {
-      root.classList.add('dark');
-      root.style.colorScheme = 'dark';
-    } else if (theme === 'light') {
-      root.classList.remove('dark');
-      root.style.colorScheme = 'light';
-    } else if (theme === 'system') {
-      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-      if (systemDark) {
+    const applyDark = (isDark: boolean) => {
+      if (isDark) {
         root.classList.add('dark');
+        root.setAttribute('data-theme', 'dark');
         root.style.colorScheme = 'dark';
       } else {
         root.classList.remove('dark');
+        root.setAttribute('data-theme', 'light');
         root.style.colorScheme = 'light';
       }
+    };
+
+    if (theme === 'dark') {
+      applyDark(true);
+      localStorage.setItem('techfix_theme', 'dark');
+    } else if (theme === 'light') {
+      applyDark(false);
+      localStorage.setItem('techfix_theme', 'light');
+    } else if (theme === 'system') {
+      const systemDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+      applyDark(systemDark);
     }
   }, [companySettings.theme]);
 
@@ -856,6 +871,100 @@ _Para cualquier consulta, responde directamente a este mensaje._`;
       inventory: updatedInventory,
       cashMovements,
     }).catch((err) => console.warn('Instant updateInventoryItem persist error:', err));
+  };
+
+  const syncInventoryBatch = (
+    newItems: Array<Omit<InventoryItem, 'id' | 'createdAt' | 'updatedAt'> | InventoryItem>,
+    mode: 'smart_merge' | 'add_all' = 'smart_merge'
+  ): { added: number; updated: number } => {
+    const now = new Date().toISOString();
+    let addedCount = 0;
+    let updatedCount = 0;
+
+    let updatedInventory = [...inventory];
+
+    newItems.forEach((incoming, idx) => {
+      const incomingSku = (incoming.sku || '').trim().toLowerCase();
+      const incomingName = (incoming.name || '').trim().toLowerCase();
+
+      let existingIndex = -1;
+      if (mode === 'smart_merge') {
+        existingIndex = updatedInventory.findIndex((item) => {
+          const itemSku = (item.sku || '').trim().toLowerCase();
+          const itemName = (item.name || '').trim().toLowerCase();
+          return (
+            (incomingSku && itemSku && itemSku === incomingSku) ||
+            (incomingName && itemName && itemName === incomingName)
+          );
+        });
+      }
+
+      const costVal = incoming.costPrice ?? (incoming as any).cost ?? 0;
+      const saleVal = incoming.salePrice ?? (incoming as any).sellingPrice ?? (incoming as any).price ?? 0;
+      const stockVal = incoming.stock ?? (incoming as any).quantity ?? 1;
+      const minStockVal = incoming.minStock ?? (incoming as any).minQuantity ?? 2;
+
+      if (existingIndex >= 0) {
+        const existing = updatedInventory[existingIndex];
+        const newStock = (existing.stock ?? existing.quantity ?? 0) + stockVal;
+        updatedInventory[existingIndex] = {
+          ...existing,
+          stock: newStock,
+          quantity: newStock,
+          category: incoming.category || existing.category,
+          costPrice: costVal > 0 ? costVal : existing.costPrice,
+          cost: costVal > 0 ? costVal : existing.costPrice,
+          salePrice: saleVal > 0 ? saleVal : existing.salePrice,
+          sellingPrice: saleVal > 0 ? saleVal : existing.salePrice,
+          price: saleVal > 0 ? saleVal : existing.salePrice,
+          location: incoming.location || existing.location,
+          supplier: incoming.supplier || existing.supplier,
+          compatibleModels: incoming.compatibleModels || existing.compatibleModels,
+          notes: incoming.notes ? `${existing.notes || ''} | ${incoming.notes}`.trim() : existing.notes,
+          updatedAt: now,
+        };
+        updatedCount++;
+      } else {
+        const newItem: InventoryItem = {
+          ...incoming,
+          id: (incoming as any).id || `inv-${Date.now()}-${idx}-${Math.random().toString(36).substr(2, 4)}`,
+          sku: incoming.sku || `REP-${Date.now().toString().slice(-4)}${idx}`,
+          name: incoming.name || 'Repuesto sin nombre',
+          category: incoming.category || 'Otros Repuestos',
+          stock: stockVal,
+          quantity: stockVal,
+          minStock: minStockVal,
+          minQuantity: minStockVal,
+          costPrice: costVal,
+          cost: costVal,
+          salePrice: saleVal,
+          sellingPrice: saleVal,
+          price: saleVal,
+          location: incoming.location || 'Taller',
+          supplier: incoming.supplier || '',
+          compatibleModels: incoming.compatibleModels || '',
+          notes: incoming.notes || '',
+          createdAt: now,
+          updatedAt: now,
+        };
+        updatedInventory.unshift(newItem);
+        addedCount++;
+      }
+    });
+
+    setInventory(updatedInventory);
+
+    LocalDatabaseService.persistAllSync({
+      companySettings,
+      clients,
+      servicesCatalog,
+      orders,
+      inventory: updatedInventory,
+      cashMovements,
+    });
+    setCloudSyncState((prev) => ({ ...prev, pendingLocalChanges: true }));
+
+    return { added: addedCount, updated: updatedCount };
   };
 
   const deleteInventoryItem = (itemId: string) => {
@@ -1648,6 +1757,7 @@ _Para cualquier consulta, responde directamente a este mensaje._`;
         updateInventoryItem,
         deleteInventoryItem,
         adjustInventoryStock,
+        syncInventoryBatch,
         addCashMovement,
         deleteCashMovement,
         addClient,
