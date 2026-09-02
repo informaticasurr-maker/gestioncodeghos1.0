@@ -1,11 +1,11 @@
 {
-  "projectId": "codeghos1",
-  "appId": "1:1045564530825:web:3477056ecf939f5aa9a658",
-  "apiKey": "AIzaSyAnWzIJHhpFEnaIoWW7NTj17H19giI1WSM",
-  "authDomain": "codeghos1.firebaseapp.com",
+  "projectId": "gestiontallerpm",
+  "appId": "1:840468890133:web:6198160dfc8408447bc41c",
+  "apiKey": "AIzaSyAQheiCMBzpRYVfPF6-Qy5OZzX61TCRib0",
+  "authDomain": "gestiontallerpm.firebaseapp.com",
   "firestoreDatabaseId": "(default)",
-  "storageBucket": "codeghos1.firebasestorage.app",
-  "messagingSenderId": "1045564530825",
+  "storageBucket": "gestiontallerpm.firebasestorage.app",
+  "messagingSenderId": "840468890133",
   "measurementId": "",
   "oAuthClientId": "",
   "recaptchaSiteKey": ""
